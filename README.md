@@ -23,6 +23,18 @@ The framework includes:
 ```
 blue-crab-population-dynamics/
 │
+├── outputs/
+│   ├── calibration_out.joblib          # Saved calibration results (Pareto front, optimal parameters)
+│   └── sensitivity_analysis_out.joblib # Saved sensitivity analysis results (EE indices, confidence bounds)
+│
+├── processed_data/
+│   ├── data.csv                  # Processed crab density data ready for modelling
+│   └── temperature.npy           # Processed monthly temperature time series [°C]
+|
+├── raw_data/
+│   ├── maryland_data.xlsx                                              # Observed crab density data (Maryland DNR)
+│   └── tos.nwa.full.hcast.monthly.regrid.r20250715.199301-202312.nc    # Sea surface temperature reanalysis (1993–2023)
+│
 ├── src/
 │   ├── calibration.py            # NSGA-II multi-objective calibration
 │   ├── functions.py              # ODE integration, objective function, parameter packing
@@ -32,18 +44,6 @@ blue-crab-population-dynamics/
 │
 ├── data_processing.ipynb         # Data loading and preprocessing
 ├── main.ipynb                    # Main pipeline: sensitivity analysis, calibration, visualization
-│
-├── raw_data/
-│   ├── maryland_data.xlsx                                              # Observed crab density data (Maryland DNR)
-│   └── tos.nwa.full.hcast.monthly.regrid.r20250715.199301-202312.nc    # Sea surface temperature reanalysis (1993–2023)
-│
-├── data/
-│   ├── data.csv                  # Processed crab density data ready for modelling
-│   └── temperature.npy           # Processed monthly temperature time series [°C]
-│
-├── outputs/
-│   ├── calibration_out.joblib          # Saved calibration results (Pareto front, optimal parameters)
-│   └── sensitivity_analysis_out.joblib # Saved sensitivity analysis results (EE indices, confidence bounds)
 │
 ├── requirements.txt
 └── README.md
@@ -100,13 +100,13 @@ netCDF4
 
 ## Usage
 
-To get started, run `main.ipynb` directly — processed data is already available in `data/` and no preprocessing step is required.
+To get started, run `main.ipynb` directly — processed data is already available in `processed_data/` and no preprocessing step is required.
 
 **1. Data preprocessing** *(optional — only needed to reprocess raw data)*
 ```bash
 jupyter notebook data_processing.ipynb
 ```
-Loads raw input data from `raw_data/`, processes the temperature time series and observed crab densities, and saves the processed inputs to `data/`. Skip this step if you are using the data files already provided in `data/`.
+Loads raw input data from `raw_data/`, processes the temperature time series and observed crab densities, and saves the processed inputs to `processed_data/`. Skip this step if you are using the data files already provided in `data/`.
 
 **2. Main pipeline**
 ```bash
