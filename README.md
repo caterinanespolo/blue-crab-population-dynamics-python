@@ -1,19 +1,19 @@
-# blue-crab-population-dynamics
+# Blue Crab population dynamics
 
 A Python-based simulation and analysis framework for modelling the population dynamics of the blue crab (*Callinectes sapidus*) in response to environmental and biological drivers.
 
-This project was developed as part of the MSc thesis *"Dynamic Modelling and Simulation of Blue Crab (Callinectes Sapidus) Populations"*, University of Padova, 2024–2025.
+This project was developed as part of the MSc thesis *"Dynamic Modelling and Simulation of Blue Crab (Callinectes Sapidus) Populations"*, University of Padova, 2024–2025, supervisor: prof. Mirco Rampazzo, co-supervisor: prof. Alberto Barausse.
 
 ---
 
 ## Overview
 
-The blue crab (*Callinectes sapidus*) is an invasive species causing significant ecological and economic impact in Mediterranean coastal ecosystems. This project implements a two-compartment ODE model describing the temporal evolution of juvenile and adult female crab densities, driven by water temperature, predation, fishing pressure, and density-dependent reproduction.
+The blue crab (*Callinectes sapidus*) is an invasive species causing significant ecological and economic impact in Mediterranean coastal ecosystems. This project implements a two-compartment ODE model describing the temporal evolution of juvenile and adult female crab densities in the Chesapeake Bay (Maryland, USA), driven by water temperature, predation, fishing pressure, and density-dependent reproduction.
 
 The framework includes:
 - A mechanistic ODE model of juvenile and adult population dynamics
-- Multi-objective parameter calibration via genetic algorithm (NSGA-II)
 - Global sensitivity analysis via the Elementary Effects (Morris) method
+- Multi-objective parameter calibration via genetic algorithm (NSGA-II)
 - Visualization tools for model fit, calibration results, and sensitivity indices
 
 ---
@@ -24,19 +24,18 @@ The framework includes:
 blue-crab-population-dynamics/
 │
 ├── src/
-│   ├── model.py                  # ODE system: crab population dynamics
-│   ├── functions.py              # ODE integration, objective function, parameter packing
 │   ├── calibration.py            # NSGA-II multi-objective calibration
+│   ├── functions.py              # ODE integration, objective function, parameter packing
+│   ├── model.py                  # ODE system: crab population dynamics
 │   ├── sensitivity_analysis.py   # Elementary Effects sensitivity analysis
 │   └── visualization.py          # Plotting functions
 │
 ├── data_processing.ipynb         # Data loading and preprocessing
-├── main.ipynb                    # Main pipeline: calibration, sensitivity analysis, visualization
+├── main.ipynb                    # Main pipeline: sensitivity analysis, calibration, visualization
 │
 ├── raw_data/
 │   ├── maryland_data.xlsx                                              # Observed crab density data (Maryland DNR)
-│   ├── tos.nwa.full.hcast.monthly.regrid.r20230520.199301-201912.nc   # Sea surface temperature reanalysis (1993–2019)
-│   └── tos.nwa.full.hcast.monthly.regrid.r20250715.199301-202312.nc   # Sea surface temperature reanalysis (1993–2023)
+│   └── tos.nwa.full.hcast.monthly.regrid.r20250715.199301-202312.nc    # Sea surface temperature reanalysis (1993–2023)
 │
 ├── data/
 │   ├── data.csv                  # Processed crab density data ready for modelling
@@ -68,9 +67,9 @@ The ODE system includes the following biological processes:
 | Fishing mortality | Linear mortality on adults |
 | Natural mortality | Constant adult mortality rate |
 
-Calibration minimizes the mean squared error between simulated and observed yearly densities (December–March window) jointly on juveniles and adults, using NSGA-II with a population of 100 individuals over 200 generations.
+Sensitivity analysis identifies the most influential parameters using the Elementary Effects method with Latin Hypercube Sampling (r=1000, radial design) and bootstrapped confidence intervals (Nboot=100), using the SAFE toolbox.
 
-Sensitivity analysis identifies the most influential parameters using the Elementary Effects method with Latin Hypercube Sampling (r=1000, radial design) and bootstrapped confidence intervals (Nboot=100).
+Calibration minimizes the mean squared error between simulated and observed yearly densities (December–March window) jointly on juveniles and adults, using NSGA-II with a population of 100 individuals over 200 generations.
 
 ---
 
@@ -121,8 +120,8 @@ Results are saved to `outputs/` as `.joblib` files and can be reloaded for visua
 To run calibration and sensitivity analysis independently:
 
 ```python
-from src.calibration import run_calibration, save_calibration
 from src.sensitivity_analysis import run_sensitivity_analysis, save_sensitivity_analysis
+from src.calibration import run_calibration, save_calibration
 
 # Sensitivity analysis
 results_sens = run_sensitivity_analysis(time_ode, T_ode, X0, juveniles, adult_fems, thresh=0.1)
