@@ -92,6 +92,8 @@ matplotlib
 pymoo
 joblib
 safepython
+pandas
+netCDF4
 ```
 
 ---
